@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.19)
+project(a10-915-Muscalagiu-AncaIoana-1)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_PREFIX_PATH "H:\\Qt\\5.15.2\\mingw81_64\\lib\\cmake")
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+set(QT_VERSION 5)
+set(REQUIRED_LIBS Core Gui Widgets Charts)
+set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Charts)
+add_executable(a10-915-Muscalagiu-AncaIoana-1 main.cpp GUI.h GUI.cpp Tutorial.cpp Tutorial.h Service.cpp Service.h Repository.cpp Repository.h Validator.cpp Validator.h TutorialTableModel.cpp TutorialTableModel.h QPushButtonDelegate.cpp QPushButtonDelegate.h UndoRedo.h UndoRedo.cpp ServiceUndo.cpp ServiceUndo.h)
+find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
+target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS_QUALIFIED})
+

@@ -1,0 +1,12 @@
+Java Tutorial for Beginners,Programming with Mosh,150,47,104,https://www.youtube.com/watch?v=eIrMbAQSU34
+Learn Python - Full Course ,freeCodeCamp.org,266,51,56,https://www.youtube.com/watch?v=rfscVS0vtbw&t=14265s
+Intro to Data Science - Crash Course,freeCodeCamp.org,89,48,31,https://www.youtube.com/watch?v=N6BghzuFLIg
+Microsoft .NET Tutorial - Intro to .NET,ICT Tutorial Channel,36,29,21,https://www.youtube.com/watch?v=iRSAmekqRBo
+Learn JavaScript - Full Course,freeCodeCamp.org,206,42,110,https://www.youtube.com/watch?v=PkZNo7MFNFg
+Node.js Ultimate Beginner's Guide,Fireship,16,19,14,https://www.youtube.com/watch?v=ENrzD9HAZK4
+C++ FULL COURSE For Beginners,CodeBeauty,200,200,9,https://www.youtube.com/watch?v=GQp1zzTwrIg
+Intermediate Python Programming Course,freeCodeCamp.org,355,46,18,https://www.youtube.com/watch?v=HGOBQPFzWKo
+C Programming | In One Video,Mike Dane,25,40,27,https://www.youtube.com/watch?v=3lQEunpmtRA&t=3s
+Rust Crash Course | Rustling,Traversity Media,110,43,0,https://www.youtube.com/watch?v=zF34dRivLOw
+Java,Andrei,4,4,9,dfgf
+Python,Andrei,1,1,4,dede
