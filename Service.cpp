@@ -54,7 +54,10 @@ void Services_Tutorial::generate_initial() {
 }
 
 void Services_Tutorial::remove_tutorial(char title[]) {
-    Tutorial *tutorial= this->repository->get_entities()[this->repository->search_in_repo(title)];
+    int index = this->repository->search_in_repo(title);
+    if (index == -1)
+        throw RepositoryException("There is no tutorial wit this title!");
+    Tutorial *tutorial= this->repository->get_entities()[index];
     Tutorial *tutorial_rec = new Tutorial(tutorial->getTitle(),tutorial->getPresenter(),tutorial->getMinutes(),tutorial->getSeconds(),tutorial->getLikes(),tutorial->getLink());
     this->repository->remove_from_repo(title);
     UndoRedoRemove* op = new UndoRedoRemove(repository,*tutorial_rec);
@@ -66,7 +69,10 @@ void Services_Tutorial::update_tutorial(char title[], char presenter[], int new_
 
 
     Tutorial *new_tutorial = new Tutorial(title, presenter, new_minutes, new_seconds, new_likes, new_link);
-    Tutorial *tutorial= this->repository->get_entities()[this->repository->search_in_repo(title)];
+    int index = this->repository->search_in_repo(title);
+    if (index == -1)
+        throw RepositoryException("There is no tutorial wit this title!");
+    Tutorial *tutorial= this->repository->get_entities()[index];
     Tutorial * tutorial_old = new Tutorial(tutorial->getTitle(),tutorial->getPresenter(),tutorial->getMinutes(),tutorial->getSeconds(),tutorial->getLikes(),tutorial->getLink());
     Tutorial* tutorial_rec = new Tutorial(title, presenter, new_minutes, new_seconds, new_likes, new_link);
     UndoRedoUpdate* op = new UndoRedoUpdate(repository,*tutorial_rec,tutorial_old);
