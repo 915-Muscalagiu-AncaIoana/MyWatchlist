@@ -53,3 +53,43 @@ seconds = old->getSeconds();
 likes = old->getLikes();
 link = old->getLink();
 }
+
+
+UndoRedoWatchlist::UndoRedoWatchlist(Repository *repository, Repository *watchlist_repository, Tutorial tutorial) {
+this->repository=repository;
+this->watchlist_repository=watchlist_repository;
+this->tutorial = tutorial;
+}
+
+UndoRedoAddWatchlist::UndoRedoAddWatchlist(Repository *repository, Repository *watchlist_repository, Tutorial tutorial)
+        : UndoRedoWatchlist(repository, watchlist_repository, tutorial) {
+
+}
+
+void UndoRedoAddWatchlist::executeUndo() {
+    watchlist_repository->remove_from_repo(tutorial.getTitle());
+}
+
+void UndoRedoAddWatchlist::executeRedo() {
+    Tutorial* t = new Tutorial(&tutorial);
+    watchlist_repository->add_to_repo(t);
+}
+
+UndoRedoRemoveWatchlist::UndoRedoRemoveWatchlist(Repository *repository, Repository *watchlist_repository,
+                                                 Tutorial tutorial,Tutorial updated) : UndoRedoWatchlist(repository,
+                                                                                        watchlist_repository,
+                                                                                        tutorial) {
+    this->updated = updated;
+}
+
+void UndoRedoRemoveWatchlist::executeUndo() {
+    Tutorial* t = new Tutorial(&tutorial);
+watchlist_repository->add_to_repo(t);
+repository->update_in_repo(t);
+}
+
+void UndoRedoRemoveWatchlist::executeRedo() {
+    watchlist_repository->remove_from_repo(tutorial.getTitle());
+    Tutorial* t = new Tutorial(&updated);
+    repository->update_in_repo(t);
+}

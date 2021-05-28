@@ -73,6 +73,8 @@ private:
     QPushButton* nextButton;
     QPushButton* exitWatchlistButton;
     QPushButton* addWatchlistButton;
+    QPushButton* undoWatchlistButton;
+    QPushButton* redoWatchlistButton;
 
     QPushButton* displayAsTableButton;
     QPushButton* displayAsTreeButton;
@@ -140,6 +142,8 @@ private slots:
     void display_tree();
     void undoAct();
     void redoAct();
+    void undoWatchlistAct();
+    void redoWatchlistAct();
 
 
 };

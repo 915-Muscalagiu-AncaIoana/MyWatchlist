@@ -12,7 +12,8 @@ int main(int argc, char** argv)
     Repository *repository_watchlist = new Repository();
     Validator *validator = new Validator();
     ServiceUndo* serviceUndo = new ServiceUndo(repository);
-    Services_Tutorial *servicesTutorial = new Services_Tutorial(repository, repository_watchlist, serviceUndo, validator);
+    ServiceUndoWatchlist* serviceUndoWatchlist = new ServiceUndoWatchlist(repository,repository_watchlist);
+    Services_Tutorial *servicesTutorial = new Services_Tutorial(repository, repository_watchlist, serviceUndo,serviceUndoWatchlist, validator);
 
     GUI* gui = new GUI(nullptr,servicesTutorial);
 gui->show();

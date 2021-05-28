@@ -31,3 +31,30 @@ void ServiceUndo::record(UndoRedo* op) {
     history.push_back(op);
     index++;
 }
+
+ServiceUndoWatchlist::ServiceUndoWatchlist(Repository *repository, Repository *watchlist) {
+this->repository = repository;
+this->watchlist_repository = watchlist;
+    index = -1;
+}
+
+void ServiceUndoWatchlist::record(UndoRedoWatchlist *op) {
+    if (index != history.size()-1 )
+        history.erase(history.begin()+index+1,history.end());
+    history.push_back(op);
+    index++;
+}
+
+void ServiceUndoWatchlist::undo() {
+    if (index == -1)
+        throw UndoException("No more redos\n");
+    history[index]->executeUndo();
+    index--;
+}
+
+void ServiceUndoWatchlist::redo() {
+    if (index == history.size()-1)
+        throw UndoException("No more undos\n");
+    history[index+1]->executeRedo();
+    index++;
+}

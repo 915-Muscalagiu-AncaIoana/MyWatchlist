@@ -8,10 +8,11 @@
 #include <cstring>
 #include <algorithm>
 
-Services_Tutorial::Services_Tutorial(Repository *repository, Repository *repository_watchlist, ServiceUndo* serviceUndo, Validator *validator) {
+Services_Tutorial::Services_Tutorial(Repository *repository, Repository *repository_watchlist, ServiceUndo* serviceUndo, ServiceUndoWatchlist* serviceUndoWatchlist, Validator *validator) {
     this->repository = repository;
     this->repository_watchlist = repository_watchlist;
     this->validator = validator;
+    this->serviceUndoWatchlist = serviceUndoWatchlist;
 this->serviceUndo = serviceUndo;
 }
 
@@ -109,11 +110,24 @@ void Services_Tutorial::add_tutorial_to_watchlist(char title[]) {
     seconds = this->repository->get_entities()[position]->getSeconds();
     likes = this->repository->get_entities()[position]->getLikes();
     Tutorial *tutorial = new Tutorial(title, presenter, minutes, seconds, likes, link);
+    Tutorial *tutorial_rec = new Tutorial(title, presenter, minutes, seconds, likes, link);
+    UndoRedoAddWatchlist* op = new UndoRedoAddWatchlist(repository,repository_watchlist,*tutorial_rec);
+    serviceUndoWatchlist->record(op);
     this->repository_watchlist->add_to_repo(tutorial);
 }
 
 void Services_Tutorial::delete_tutorial_from_watchlist(char title[]) {
+    int index = this->repository->search_in_repo(title);
+    if (index == -1)
+        throw RepositoryException("There is no tutorial wit this title!");
+    Tutorial *tutorial= this->repository->get_entities()[index];
+    Tutorial *tutorial_rec = new Tutorial(tutorial->getTitle(),tutorial->getPresenter(),tutorial->getMinutes(),tutorial->getSeconds(),tutorial->getLikes(),tutorial->getLink());
+    Tutorial *tutorial_new = new Tutorial(tutorial_rec);
+    tutorial_new->setLikes(tutorial_new->getLikes()+1);
+    UndoRedoRemoveWatchlist* op = new UndoRedoRemoveWatchlist(repository,repository_watchlist,*tutorial_rec,*tutorial_new);
+    serviceUndoWatchlist->record(op);
     this->repository_watchlist->remove_from_repo(title);
+
 }
 
 void Services_Tutorial::rate_a_tutorial(char title[]) {
@@ -203,4 +217,13 @@ this->serviceUndo->undo();
 void Services_Tutorial::redoOp() {
 this->serviceUndo->redo();
 }
+
+void Services_Tutorial::undoWatchlistOp() {
+this->serviceUndoWatchlist->undo();
+}
+
+void Services_Tutorial::redoWatchlistOp() {
+this->serviceUndoWatchlist->redo();
+}
+
 

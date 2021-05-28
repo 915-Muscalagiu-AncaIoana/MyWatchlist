@@ -18,11 +18,12 @@ class Services_Tutorial {
 private:
     Validator *validator;
     ServiceUndo* serviceUndo;
+    ServiceUndoWatchlist* serviceUndoWatchlist;
     Repository *repository;
     Repository *repository_watchlist;
 public:
     //This function creates a service with a repository of tutorials and a validator
-    Services_Tutorial(Repository *repository, Repository *repository_watchlist,ServiceUndo* serviceUndo, Validator *validator);
+    Services_Tutorial(Repository *repository, Repository *repository_watchlist,ServiceUndo* serviceUndo, ServiceUndoWatchlist* serviceUndoWatchlist, Validator *validator);
 
     //This function creates a tutorial with the given input, validates and adds it to the repository of tutorials
     void add_tutorial(char title[], char presenter[], int minutes, int seconds, int likes, char link[]);
@@ -51,6 +52,7 @@ public:
     //This function rates a tutorial by increasing its number of likes with 1
     void rate_a_tutorial(char title[]);
 
+
     //This function returns the watchlist of the user
     vector<Tutorial*> get_watchlist();
 
@@ -72,4 +74,7 @@ public:
 
     void undoOp();
     void redoOp();
+
+    void undoWatchlistOp();
+    void redoWatchlistOp();
 };

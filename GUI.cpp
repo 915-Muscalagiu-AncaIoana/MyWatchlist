@@ -20,8 +20,8 @@ void GUI::show_user() {
 //    QDesktopWidget desktopWidget;
 //    QRect screenSize = desktopWidget.availableGeometry(adminW);
 //    userW->setFixedSize(screenSize.width() * 0.4, screenSize.height() * 0.4);
-    this->userW->show();
-    userW->setWindowTitle("User Mode");
+
+
     hide();
     this->initialize_user(userW);
 }
@@ -31,8 +31,7 @@ void GUI::show_admin() {
 //    QDesktopWidget desktopWidget;
 //    QRect screenSize = desktopWidget.availableGeometry(adminW);
 //    adminW->setFixedSize(screenSize.width() * 0.85, screenSize.height() * 0.4);
-    adminW->setWindowTitle("Administrator Mode");
-    adminW->show();
+
 
     hide();
 
@@ -41,6 +40,9 @@ void GUI::show_admin() {
 }
 
 void GUI::initialize_user(QWidget *parent) {
+    if (userW == nullptr)
+        userW = new QWidget;
+    parent = userW;
     if(parent->layout() != nullptr)
     {
        QLayoutItem * item ;
@@ -66,7 +68,9 @@ void GUI::initialize_user(QWidget *parent) {
     tableview->setItemDelegateForColumn(6,qPushButtonDelegate);
     layout->addWidget(tableview);
 
+    if (filterW == nullptr)
     this->filterW = new QWidget;
+    if (deleteW == nullptr)
     this->deleteW = new QWidget;
     //buttons for the playlist
     QWidget *playlistButtonsWidget = new QWidget{};
@@ -74,10 +78,14 @@ void GUI::initialize_user(QWidget *parent) {
     this->filterButton = new QPushButton{"Filter"};
     this->deleteButton = new QPushButton{"Delete"};
     this->openInAppButton = new QPushButton{"Open in App"};
+    this->undoWatchlistButton = new QPushButton{"Undo"};
+    this->redoWatchlistButton = new QPushButton{"Redo"};
     this->exitUser = new QPushButton{"Exit"};
    exitUser->setStyleSheet("background-color: rgb(236,190,190)");
     watchlistButtonsLayout->addWidget(filterButton);
     watchlistButtonsLayout->addWidget(deleteButton);
+    watchlistButtonsLayout->addWidget(undoWatchlistButton);
+    watchlistButtonsLayout->addWidget(redoWatchlistButton);
     watchlistButtonsLayout->addWidget(openInAppButton);
     watchlistButtonsLayout->addWidget(exitUser);
 
@@ -107,6 +115,10 @@ void GUI::initialize_user(QWidget *parent) {
     QObject::connect(this->openInAppButton, SIGNAL(clicked()), this, SLOT(open_in_app()));
     QObject::connect(this->filterButton, SIGNAL(clicked()), this, SLOT(filter_watchlist()));
     QObject::connect(this->deleteButton, SIGNAL(clicked()), this, SLOT(delete_from_watchlist()));
+    QObject::connect(undoWatchlistButton, SIGNAL(clicked()), this, SLOT(undoWatchlistAct()));
+    QObject::connect(redoWatchlistButton, SIGNAL(clicked()), this, SLOT(redoWatchlistAct()));
+    this->userW->show();
+    userW->setWindowTitle("User Mode");
 }
 
 void GUI::filter_watchlist() {
@@ -270,7 +282,7 @@ void GUI::add_to_watchlist() {
         tableModel = new TutorialTableModel{service};
         tableview = new QTableView{};
         tableview->setModel(tableModel);
-
+        show_user();
         next_tutorial();
     }
     catch (RepositoryException &repositoryException) {
@@ -285,6 +297,7 @@ void GUI::open_in_app() {
 
 void GUI::delete_from_watchlist() {
     QWidget* parent = deleteW;
+
     if(parent->layout() != nullptr)
     {
         QLayoutItem * item ;
@@ -339,7 +352,9 @@ void GUI::delete_by_title_from_watchlist() {
             this->service->delete_tutorial_from_watchlist((char *) title.c_str());
             if (radio1->isChecked())
                 this->service->rate_a_tutorial((char *) title.c_str());
-            //this->populate_watchlist();
+
+            show_user();
+
 
         }
         catch (RepositoryException &repositoryException) {
@@ -353,6 +368,9 @@ void GUI::delete_by_title_from_watchlist() {
 }
 
 void GUI::initialize_admin(QWidget *parent) {
+    if (adminW == nullptr)
+        adminW = new QWidget;
+    parent = adminW;
     if(parent->layout() != nullptr)
     {
         QLayoutItem * item ;
@@ -442,6 +460,8 @@ void GUI::initialize_admin(QWidget *parent) {
     QObject::connect(this->displayButton, SIGNAL(clicked()), this, SLOT(display_as_table()));
     QObject::connect(this->displayAsTableButton, SIGNAL(clicked()), this, SLOT(display_table()));
     QObject::connect(this->displayAsTreeButton, SIGNAL(clicked()), this, SLOT(display_tree()));
+    adminW->setWindowTitle("Administrator Mode");
+    adminW->show();
 //
 }
 
@@ -517,7 +537,6 @@ void GUI::delete_tutorial() {
     try {
         service->remove_tutorial((char *) title.c_str());
 
-        this->populate_tutorials();
     }
     catch (ValidatorException &validatorException) {
         QMessageBox messageBox;
@@ -645,18 +664,6 @@ void GUI::display_as_table() {
 void GUI::back_admin() {
     this->adminW->hide();
     this->show();
-//    delete titleInput;
-//    delete presenterInput;
-//    delete minutesInput;
-//    delete secondsInput;
-//    delete likesInput;
-//    delete linkInput;
-//    delete addButton;
-//    delete deleteButton;
-//    delete updateButton;
-//    delete displayButton;
-//    delete exitAdmin;
-//    delete tutorialsListWidget;
 
 
 }
@@ -674,7 +681,8 @@ void GUI::initialize() {
     this->exitButton = new QPushButton{ "Exit" };
     exitButton->setStyleSheet("background-color: rgb(236,190,190)");
     this->chooseButton = new QPushButton{ "Choose" };
-
+    this->filterW = nullptr;
+    this->deleteW = nullptr;
 
     QLabel *label2 = new QLabel("Repository type : ");
     repo1 = new QRadioButton("CSV");
@@ -696,8 +704,8 @@ void GUI::initialize() {
     QObject::connect(this->modeBButton, SIGNAL(clicked()), this, SLOT(show_user()));
     QObject::connect(this->exitButton, SIGNAL(clicked()), this, SLOT(exit_app()));
     QObject::connect(this->chooseButton, SIGNAL(clicked()), this, SLOT(choose_repo()));
-    this-> adminW = new QWidget;
-    this-> userW = new QWidget;
+    this-> adminW = nullptr;
+    this-> userW = nullptr;
 
 }
 
@@ -803,6 +811,30 @@ void GUI::redoAct() {
     try {
         this->service->redoOp();
         this->populate_tutorials();
+    }
+    catch (UndoException &undoException) {
+        QMessageBox messageBox;
+        messageBox.critical(0, "Error", QString::fromStdString("No more redos!"));
+    }
+}
+
+void GUI::undoWatchlistAct() {
+    try {
+        this->service->undoWatchlistOp();
+
+        show_user();
+    }
+    catch (UndoException &undoException) {
+        QMessageBox messageBox;
+        messageBox.critical(0, "Error", QString::fromStdString("No more undos!"));
+    }
+}
+
+void GUI::redoWatchlistAct() {
+    try {
+        this->service->redoWatchlistOp();
+
+        show_user();
     }
     catch (UndoException &undoException) {
         QMessageBox messageBox;

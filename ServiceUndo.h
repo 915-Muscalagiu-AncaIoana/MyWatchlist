@@ -18,3 +18,15 @@ public:
     void undo();
     void redo();
 };
+class ServiceUndoWatchlist{
+private:
+    vector <UndoRedoWatchlist*> history;
+    Repository* repository;
+    Repository* watchlist_repository;
+    int index;
+public:
+    ServiceUndoWatchlist(Repository* repository,Repository* watchlist);
+    void record(UndoRedoWatchlist* op);
+    void undo();
+    void redo();
+};
