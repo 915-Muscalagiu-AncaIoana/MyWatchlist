@@ -27,8 +27,9 @@ void Services_Tutorial::add_tutorial(char title[], char presenter[], int minutes
     Tutorial *tutorial = new Tutorial(title, presenter, minutes, seconds, likes, link);
     Tutorial *tutorial_rec = new Tutorial(title, presenter, minutes, seconds, likes, link);
     UndoRedoAdd* op = new UndoRedoAdd(repository,*tutorial_rec);
-    serviceUndo->record(op);
+
     this->repository->add_to_repo(tutorial);
+    serviceUndo->record(op);
 }
 
 void Services_Tutorial::generate_initial() {
@@ -77,9 +78,10 @@ void Services_Tutorial::update_tutorial(char title[], char presenter[], int new_
     Tutorial * tutorial_old = new Tutorial(tutorial->getTitle(),tutorial->getPresenter(),tutorial->getMinutes(),tutorial->getSeconds(),tutorial->getLikes(),tutorial->getLink());
     Tutorial* tutorial_rec = new Tutorial(title, presenter, new_minutes, new_seconds, new_likes, new_link);
     UndoRedoUpdate* op = new UndoRedoUpdate(repository,*tutorial_rec,tutorial_old);
-    serviceUndo->record(op);
+
     this->validator->validate_tutorial(title, presenter, new_minutes, new_seconds, new_likes, new_link);
     this->repository->update_in_repo(new_tutorial);
+    serviceUndo->record(op);
 }
 
 vector<Tutorial *> Services_Tutorial::get_tutorials() {
@@ -112,8 +114,9 @@ void Services_Tutorial::add_tutorial_to_watchlist(char title[]) {
     Tutorial *tutorial = new Tutorial(title, presenter, minutes, seconds, likes, link);
     Tutorial *tutorial_rec = new Tutorial(title, presenter, minutes, seconds, likes, link);
     UndoRedoAddWatchlist* op = new UndoRedoAddWatchlist(repository,repository_watchlist,*tutorial_rec);
-    serviceUndoWatchlist->record(op);
+
     this->repository_watchlist->add_to_repo(tutorial);
+    serviceUndoWatchlist->record(op);
 }
 
 void Services_Tutorial::delete_tutorial_from_watchlist(char title[]) {
@@ -125,8 +128,9 @@ void Services_Tutorial::delete_tutorial_from_watchlist(char title[]) {
     Tutorial *tutorial_new = new Tutorial(tutorial_rec);
     tutorial_new->setLikes(tutorial_new->getLikes()+1);
     UndoRedoRemoveWatchlist* op = new UndoRedoRemoveWatchlist(repository,repository_watchlist,*tutorial_rec,*tutorial_new);
-    serviceUndoWatchlist->record(op);
+
     this->repository_watchlist->remove_from_repo(title);
+    serviceUndoWatchlist->record(op);
 
 }
 

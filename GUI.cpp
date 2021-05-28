@@ -536,7 +536,7 @@ void GUI::delete_tutorial() {
     std::string title = titleInput->text().toStdString();
     try {
         service->remove_tutorial((char *) title.c_str());
-
+        this->populate_tutorials();
     }
     catch (ValidatorException &validatorException) {
         QMessageBox messageBox;
