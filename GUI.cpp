@@ -828,6 +828,10 @@ void GUI::undoWatchlistAct() {
         QMessageBox messageBox;
         messageBox.critical(0, "Error", QString::fromStdString("No more undos!"));
     }
+    catch (RepositoryException & repositoryException)
+    {
+        cout<<repositoryException.getMessage()<<endl;
+    }
 }
 
 void GUI::redoWatchlistAct() {
@@ -839,6 +843,10 @@ void GUI::redoWatchlistAct() {
     catch (UndoException &undoException) {
         QMessageBox messageBox;
         messageBox.critical(0, "Error", QString::fromStdString("No more redos!"));
+    }
+    catch (RepositoryException & repositoryException)
+    {
+        cout<<repositoryException.getMessage()<<endl;
     }
 }
 
