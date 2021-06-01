@@ -1,0 +1,4 @@
+C:/Users/LAPTOP_MIA/CLionProjects/a10-915-Muscalagiu-AncaIoana-1/cmake-build-debug/CMakeFiles/a10-915-Muscalagiu-AncaIoana-1.dir
+C:/Users/LAPTOP_MIA/CLionProjects/a10-915-Muscalagiu-AncaIoana-1/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/LAPTOP_MIA/CLionProjects/a10-915-Muscalagiu-AncaIoana-1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/LAPTOP_MIA/CLionProjects/a10-915-Muscalagiu-AncaIoana-1/cmake-build-debug/CMakeFiles/a10-915-Muscalagiu-AncaIoana-1_autogen.dir

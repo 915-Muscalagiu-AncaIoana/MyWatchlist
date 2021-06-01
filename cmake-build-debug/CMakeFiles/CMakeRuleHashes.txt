@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+c39b5bb11567e9b4375e478d28e1fb59 CMakeFiles/a10-915-Muscalagiu-AncaIoana-1_autogen
