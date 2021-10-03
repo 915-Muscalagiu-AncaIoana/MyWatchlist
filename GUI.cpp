@@ -16,26 +16,13 @@
 #include "QTableView"
 using namespace QtCharts;
 void GUI::show_user() {
-
-//    QDesktopWidget desktopWidget;
-//    QRect screenSize = desktopWidget.availableGeometry(adminW);
-//    userW->setFixedSize(screenSize.width() * 0.4, screenSize.height() * 0.4);
-
-
     hide();
     this->initialize_user(userW);
 }
 
 void GUI::show_admin() {
 
-//    QDesktopWidget desktopWidget;
-//    QRect screenSize = desktopWidget.availableGeometry(adminW);
-//    adminW->setFixedSize(screenSize.width() * 0.85, screenSize.height() * 0.4);
-
-
     hide();
-
-
     this->initialize_admin(adminW);
 }
 
@@ -56,10 +43,6 @@ void GUI::initialize_user(QWidget *parent) {
 
 
     QVBoxLayout *layout = new QVBoxLayout{parent};
-    //playlist widget
-
-  //  this->watchlistWidget = new QListWidget{};
-
     tableModel = new TutorialTableModel{service};
     tableview = new QTableView{};
     tableview->setModel(tableModel);
@@ -72,7 +55,7 @@ void GUI::initialize_user(QWidget *parent) {
     this->filterW = new QWidget;
     if (deleteW == nullptr)
     this->deleteW = new QWidget;
-    //buttons for the playlist
+
     QWidget *playlistButtonsWidget = new QWidget{};
     QHBoxLayout *watchlistButtonsLayout = new QHBoxLayout{playlistButtonsWidget};
     this->filterButton = new QPushButton{"Filter"};
@@ -99,18 +82,15 @@ void GUI::initialize_user(QWidget *parent) {
     this->presenterInput = new QLineEdit{};
     formLayout->addRow(label2, this->presenterInput);
 
-    //add everything to the right side
     QLabel* label_watch = new QLabel{"Watchlist"};
     label_watch->setStyleSheet("font: 16pt");
     label_watch->setAlignment(Qt::AlignHCenter);
     layout->addWidget(label_watch);
-    //layout->addWidget(watchlistWidget);
 
 
-    //this->watchlistWidget->setDisabled(true);
     layout->addWidget(playlistButtonsWidget);
     layout->addWidget(presenterWidget);
-   // populate_watchlist();
+
     QObject::connect(this->exitUser, SIGNAL(clicked()), this, SLOT(back_user()));
     QObject::connect(this->openInAppButton, SIGNAL(clicked()), this, SLOT(open_in_app()));
     QObject::connect(this->filterButton, SIGNAL(clicked()), this, SLOT(filter_watchlist()));
@@ -277,7 +257,6 @@ void GUI::open_link() {
 void GUI::add_to_watchlist() {
     try {
         this->service->add_tutorial_to_watchlist(filtered[indexWatchlist]->getTitle());
-      //  populate_watchlist();
 
         tableModel = new TutorialTableModel{service};
         tableview = new QTableView{};
